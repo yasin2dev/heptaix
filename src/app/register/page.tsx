@@ -13,6 +13,7 @@ export default function RegisterPage() {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [response, setResponse] = useState("");
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-300">
@@ -75,9 +76,14 @@ export default function RegisterPage() {
                 username: username.trim(),
                 password: password,
             };
-            await axios
-                .post("http://localhost:4001/api/user/register", formData)
-                .catch((e) => console.error(e));
+            await axios.post("http://localhost:4001/api/user/register", formData).then((resp) => {
+                if (resp.status === 201) {
+                    setResponse(resp.data)
+                    setInterval(() => {
+                        window.location.href = "/login"
+                    }, 1000)
+                }
+            })
         }
     }
 }
