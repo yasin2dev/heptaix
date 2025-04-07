@@ -10,3 +10,4 @@ export type User = {
 }
 
 export type RegisterUser = Omit<User, "id">;
+export type TokenUser = Omit<User, "hash">;

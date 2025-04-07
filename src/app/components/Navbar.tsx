@@ -1,7 +1,29 @@
+"use client";
+
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { TokenUser } from '../../../server/types';
 
 export default function Navbar() {
+    const [value, setValue] = useState<string | null>();
+    const [isVal, setIsVal] = useState<boolean>(false);
+    const [user, setUser] = useState<TokenUser | null>(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem("JWT_TOKEN");
+        const user = localStorage.getItem("USER");
+        if (token) {
+            setIsVal(true);
+            setValue(token);
+            if (user) {
+                setUser(JSON.parse(user))
+            }
+        } else if (!token) {
+            setIsVal(false);
+            setValue(null);
+        }
+    }, [])
+
     return (
         <>
             <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -9,10 +31,15 @@ export default function Navbar() {
                     <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                         <span className="self-center text-2xl whitespace-nowrap dark:text-white text-amber-600 font-bold italic">Heptaix</span>
                     </Link>
-                    <div className="flex items-center space-x-6 rtl:space-x-reverse">
-                        <Link href="/login" className="text-sm  text-amber-600 dark:text-amber-500 hover:underline">Login</Link>
-                        <Link href="/register" className="text-sm  text-amber-600 dark:text-amber-500 hover:underline">Register</Link>
-                    </div>
+                    {
+                        !isVal ?
+                        <div className="flex items-center space-x-6 rtl:space-x-reverse">
+                            <Link href="/login" className="text-sm  text-amber-600 dark:text-amber-500 hover:underline">Login</Link>
+                            <Link href="/register" className="text-sm  text-amber-600 dark:text-amber-500 hover:underline">Register</Link>
+                        </div>
+                        :
+                        <p>Welcome {user?.name}</p>
+                    }
                 </div>
             </nav>
         </>

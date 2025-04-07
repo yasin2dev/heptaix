@@ -55,8 +55,16 @@ export default function LoginPage() {
             }
             await axios.post("http://localhost:4001/api/user/login", formData)
                 .then((resp) => {
-                    setResponse(resp.data.replace('"', ''))
-                    console.log(resp.data)
+                    let token = localStorage.getItem("JWT_TOKEN");
+                    if (!token) {
+                        if (resp.status === 200) {
+                            localStorage.setItem("JWT_TOKEN", resp.data.token)
+                            localStorage.setItem("USER", JSON.stringify(resp.data))
+                            window.location.href = "/";
+                        }
+                    } else if (token) {
+                        console.log("Already logged in.")
+                    }
                 })
                 .catch((e) => {
                     if (e.response) {
