@@ -7,19 +7,21 @@ import { getUser } from '../../db/user/get';
 const userRoute = Router()
 
 userRoute.post('/register', async (req: Request, res: Response) => {
+    const { name, surname, username, email, password } = req.body;
     if (!req.body) res.status(400).send("Bad Request");
-    const hash: string = await bcrypt.hash(req.body['password'], 12);
-    createUser(req.body['name'], req.body['surname'], req.body['username'], req.body['email'], hash);
+    const hashedPassword: string = await bcrypt.hash(password, 12);
+    createUser(name, surname, username, email, hashedPassword);
     res.status(201).json("Register Successful.");
 })
 
 userRoute.post('/login', async (req: Request, res: Response) => {
     if (!req.body) res.status(400).send("Bad Request");
-    getUser(req.body['email'])
+    const { email, password } = req.body;
+    getUser(email)
         .then((data) => {
             if (!data) return res.status(404).send("User not found with this email");
             data.map(async (u) => {
-                const compare = await bcrypt.compare(req.body['password'], u.hash)
+                const compare = await bcrypt.compare(password, u.hash)
                 if (compare) {
                     console.log("Login success");
                 }
