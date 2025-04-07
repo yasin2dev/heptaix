@@ -19,18 +19,19 @@ userRoute.post('/login', async (req: Request, res: Response) => {
     const { email, password } = req.body;
     getUser(email)
         .then((data) => {
-            if (!data) return res.status(404).send("User not found with this email");
+            if (!data || data.length <= 0) return res.status(200).send("User credentials is not true");
             data.map(async (u) => {
                 const compare = await bcrypt.compare(password, u.hash)
                 if (compare) {
-                    console.log("Login success");
+                    console.log("Login Success")
+                    res.status(200).send("Login success");
+                } else {
+                    res.status(200).send("User credentials is not true")
                 }
             })
             console.log(data)
         })
         .catch((e) => console.error(e))
-
-    res.status(200).send("LOGIN ISTEGI GELDI")
 })
 
 userRoute.get('/', (req: Request, res: Response) => {
