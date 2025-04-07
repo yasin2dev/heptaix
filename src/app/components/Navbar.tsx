@@ -11,8 +11,8 @@ export default function Navbar() {
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">To-Do App</span>
                     </Link>
                     <div className="flex items-center space-x-6 rtl:space-x-reverse">
-                        <Link href="/login" className="text-sm  text-blue-600 dark:text-blue-500 hover:underline">Login</Link>
-                        <Link href="/register" className="text-sm  text-blue-600 dark:text-blue-500 hover:underline">Register</Link>
+                        <Link href="/login" className="text-sm  text-amber-600 dark:text-amber-500 hover:underline">Login</Link>
+                        <Link href="/register" className="text-sm  text-amber-600 dark:text-amber-500 hover:underline">Register</Link>
                     </div>
                 </div>
             </nav>

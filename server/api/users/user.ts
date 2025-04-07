@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { listUsers } from '../../db/user/list';
 import { createUser } from '../../db/user/create';
 import { getUser } from '../../db/user/get';
@@ -19,14 +20,14 @@ userRoute.post('/login', async (req: Request, res: Response) => {
     const { email, password } = req.body;
     getUser(email)
         .then((data) => {
-            if (!data || data.length <= 0) return res.status(200).send("User credentials is not true");
+            if (!data || data.length <= 0) return res.status(401).send("User credentials is not true");
             data.map(async (u) => {
                 const compare = await bcrypt.compare(password, u.hash)
                 if (compare) {
                     console.log("Login Success")
                     res.status(200).send("Login success");
                 } else {
-                    res.status(200).send("User credentials is not true")
+                    res.status(401).send("User credentials is not true")
                 }
             })
             console.log(data)

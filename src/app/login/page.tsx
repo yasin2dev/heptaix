@@ -1,6 +1,10 @@
 'use client'
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import axios from "axios";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -9,18 +13,40 @@ export default function LoginPage() {
     const [response, setResponse] = useState<string>();
 
     return (
-        <div className="flex justify-center items-start pt-20">
-            <div className="text-center bg-blue-900 m-auto top-0 max-w-max justify-center rounded-2xl p-10">
-                <p>Welcome Again.</p>
-                {response ? <p>{response}</p> : <div></div>}
-                <form className="grid justify-center gap-2 mt-10" id="login-form" onSubmit={(e) => e.preventDefault()}>
-                    <input placeholder="Email Address" className="w-md rounded-md border-blue-300 border-2 p-2 focus:outline-none" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <input placeholder="Password" type="password" className="rounded-md border-blue-300 border-2 p-2 focus:outline-none" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </form>
-                <button type="submit" className="w-md mt-4 bg-green-600 rounded-l p-2 cursor-pointer" onClick={handleLoginUser}>Login</button>
-            </div>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-200">
+            <Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-white">
+                <CardContent>
+                    {response ? <p>{response}</p> : <div></div>}
+                    <h2 className="text-2xl font-semibold text-center mb-6 text-amber-600">Welcome again!</h2>
+                    <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+                        <Input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <Input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <div className="text-right text-sm">
+                            <Link href="/" className="text-amber-500 hover:underline">
+                                Forgetten Password *_* ?
+                            </Link>
+                        </div>
+                        <Button onClick={handleLoginUser} type="submit" className="w-full text-white bg-amber-600 hover:bg-amber-700">
+                            Login
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
         </div>
     );
+
     async function handleLoginUser() {
         if (email && password !== '' || "" || null) {
             const formData = {
@@ -33,6 +59,9 @@ export default function LoginPage() {
                     console.log(resp.data)
                 })
                 .catch((e) => {
+                    if (e.response) {
+                        setResponse(e.response.data)
+                    }
                     console.error(e);
                 });
         }
