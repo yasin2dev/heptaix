@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import { TokenUser } from '../../../server/types';
 
 export default function Navbar() {
-    const [value, setValue] = useState<string | null>();
     const [isVal, setIsVal] = useState<boolean>(false);
     const [user, setUser] = useState<TokenUser | null>(null);
 
@@ -14,13 +13,11 @@ export default function Navbar() {
         const user = localStorage.getItem("USER");
         if (token) {
             setIsVal(true);
-            setValue(token);
             if (user) {
                 setUser(JSON.parse(user))
             }
-        } else if (!token) {
+        } else {
             setIsVal(false);
-            setValue(null);
         }
     }, [])
 
