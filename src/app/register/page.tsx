@@ -34,14 +34,8 @@ export default function RegisterPage() {
                 username: username.trim(),
                 password: password,
             }
-            await axios.post("http://localhost:4001/api/use/register", formData)
+            await axios.post("http://localhost:4001/api/user/register", formData)
                 .catch(e => console.error(e));
-
-            setName("");
-            setSurname("");
-            setEmail("");
-            setUsername("");
-            setPassword("");
         }
     }
 }
