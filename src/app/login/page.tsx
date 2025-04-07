@@ -16,7 +16,7 @@ export default function LoginPage() {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-200">
             <Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-white">
                 <CardContent>
-                    {response ? <p>{response}</p> : <div></div>}
+                    {response ? <p className="text-center text-red-100 font-semibold gap-2 italic bg-red-600 rounded-sm mt-2 mb-2 p-2">{response.replace('"', '')}</p> : <></>}
                     <h2 className="text-2xl font-semibold text-center mb-6 text-amber-600">Welcome again!</h2>
                     <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
                         <Input
