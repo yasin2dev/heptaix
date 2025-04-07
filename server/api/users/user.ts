@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { listUsers } from '../../db/user/list';
 import { createUser } from '../../db/user/create';
 import { getUser } from '../../db/user/get';
+import { zRegisterUser } from '../../types';
 
 const userRoute = Router()
 
@@ -11,8 +12,10 @@ userRoute.post('/register', async (req: Request, res: Response) => {
     const { name, surname, username, email, password } = req.body;
     if (!req.body) res.status(400).send("Bad Request");
     const hashedPassword: string = await bcrypt.hash(password, 12);
-    createUser(name, surname, username, email, hashedPassword).catch((e) => console.error(e));
-    res.status(201).json("Register Successful.");
+    // TODO: Declared but never used. Zod validation system messages added. eg. invalid email
+    const validation = zRegisterUser.parse({ name: name, surname: surname, username: username, email: email, hash: hashedPassword });
+    createUser(name, surname, username, email, hashedPassword);
+    res.status(201).send("Register Successful.");
 })
 
 userRoute.post('/login', async (req: Request, res: Response) => {
