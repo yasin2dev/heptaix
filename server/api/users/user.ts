@@ -24,7 +24,9 @@ userRoute.post('/login', async (req: Request, res: Response) => {
             data.map(async (u) => {
                 const compare = await bcrypt.compare(password, u.hash)
                 if (compare) {
-                    const token = jwt.sign(u, "DENEME", {expiresIn: '1h'});
+                    const jwtSecret = process.env.JWT_SECRET_KEY;
+                    if (!jwtSecret) throw new Error("JWT Secret Key is not defined in .env file");
+                    const token = jwt.sign(u, jwtSecret, {expiresIn: '1h'});
                     res.status(200).json({ id: u.id, name: u.name, surname: u.surname, username: u.username, email: u.email, token: token });
                 } else {
                     res.status(401).send("User credentials is not true")
