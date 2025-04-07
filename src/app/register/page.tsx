@@ -67,11 +67,7 @@ export default function RegisterPage() {
         </div>
     );
     async function handleCreateUser() {
-        if (
-            (name && surname && username && email && password !== "") ||
-            "" ||
-            null
-        ) {
+        if (name && surname && username && email && password !== "" || "" || null) {
             const formData = {
                 name: name.trim(),
                 surname: surname.trim(),
