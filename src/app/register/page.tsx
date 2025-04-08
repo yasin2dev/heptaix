@@ -19,7 +19,12 @@ export default function RegisterPage() {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-300">
             <Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-white">
                 <CardContent>
-                    {response ? <p className="text-center text-green-100 font-semibold gap-2 italic bg-green-600 rounded-sm mt-2 mb-2 p-2">{response.replace('"', '')}</p> : <></>}
+                    {response === "Register Successful." 
+                        ? <p className="text-center text-green-100 font-semibold gap-2 italic bg-green-600 rounded-sm mt-2 mb-2 p-2">{response.replace('"', '')}</p> 
+                        : response === "Invalid email format." 
+                        ? <p className="text-center text-red-100 font-semibold gap-2 italic bg-red-600 rounded-sm mt-2 mb-2 p-2">{response.replace('"', '')}</p> 
+                        : <></>
+                    }
                     <h2 className="text-2xl font-semibold text-center mb-6 text-amber-600">
                         Welcome! Let's get you register
                     </h2>
@@ -82,6 +87,8 @@ export default function RegisterPage() {
                     setInterval(() => {
                         window.location.href = "/login"
                     }, 1000)
+                } else {
+                    setResponse(resp.data)
                 }
             })
         }
