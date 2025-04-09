@@ -8,7 +8,7 @@ export default function UnauthorizatedNav() {
             <NavigationMenuItem>
                 <Link href="/getting-started" legacyBehavior passHref>
                     <NavigationMenuLink className="list-none hover:underline">
-                        Getting Started
+                        <span className='text-black'>Getting Started</span>
                     </NavigationMenuLink>
                 </Link>
             </NavigationMenuItem>

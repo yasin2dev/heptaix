@@ -8,14 +8,14 @@ export default function AuthorizatedNav() {
             <NavigationMenuItem>
                 <Link href="/" legacyBehavior passHref>
                     <NavigationMenuLink className="list-none hover:underline">
-                        My Screen
+                        <span className='text-black'>My Screen</span>
                     </NavigationMenuLink>
                 </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
                 <Link href="/todo-list" legacyBehavior passHref>
                     <NavigationMenuLink className="list-none hover:underline">
-                        To-do List
+                        <span className='text-black'>To-Do List</span>
                     </NavigationMenuLink>
                 </Link>
             </NavigationMenuItem>
