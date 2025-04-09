@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import userRoute from '../api/users/user'
+import todoRouter from '../api/todo/todo';
 
 const app = express();
 dotenv.config();
@@ -10,6 +11,7 @@ dotenv.config();
 app.use(cors());
 app.use(express.json())
 app.use('/api/user', userRoute)
+app.use('/api/todo', todoRouter)
 
 const port = Number(process.env.PORT) || 4001;
 
