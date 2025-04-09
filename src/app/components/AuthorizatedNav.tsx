@@ -1,0 +1,24 @@
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from '@/components/ui/navigation-menu'
+import Link from 'next/link'
+import React from 'react'
+
+export default function AuthorizatedNav() {
+    return (
+        <NavigationMenu className="list-none font-semibold gap-4">
+            <NavigationMenuItem>
+                <Link href="/" legacyBehavior passHref>
+                    <NavigationMenuLink className="list-none hover:underline">
+                        My Screen
+                    </NavigationMenuLink>
+                </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+                <Link href="/todo-list" legacyBehavior passHref>
+                    <NavigationMenuLink className="list-none hover:underline">
+                        To-do List
+                    </NavigationMenuLink>
+                </Link>
+            </NavigationMenuItem>
+        </NavigationMenu>
+    )
+}
