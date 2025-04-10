@@ -27,7 +27,7 @@ export default function Home() {
           ?
           <UnauthorizatedScreen />
           :
-          <div className="container flex justify-between m-auto space-x-2 rtl:space-x-reverse">
+          <div className="container flex flex-wrap justify-between m-auto space-x-2 rtl:space-x-reverse">
             {todos.map((a: Todo) => (
               <Card key={a.id} className="w-[28rem] mt-8">
                 <CardHeader>
