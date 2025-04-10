@@ -6,6 +6,7 @@ import { createUser } from '../../db/user/create';
 import { getUser } from '../../db/user/get';
 import { zRegisterUser } from '../../types';
 import { ZodError } from 'zod';
+import { catchZodError, zodErrorMessages } from '../../helper';
 
 const userRoute = Router()
 
@@ -19,12 +20,7 @@ userRoute.post('/register', async (req: Request, res: Response) => {
         console.log(validation.email);
         createUser(name, surname, username, email, hashedPassword).then(() => res.status(201).send("Register Successful."));
     } catch (e) {
-        if (e instanceof ZodError) {
-            const emailError = e.issues.filter((issue) => issue.message === "Invalid email");
-            if (emailError.length > 0) {
-                res.send("Invalid email format.");
-            }
-        }
+        if (!catchZodError(e, zodErrorMessages.email)) res.send("Invalid email format.");
     }
 })
 
