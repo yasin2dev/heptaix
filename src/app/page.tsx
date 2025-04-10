@@ -49,7 +49,7 @@ export default function Home() {
   );
 
   async function handleTodo() {
-    await axios.get("http://localhost:4001/api/todo/lorem").then((result) => {
+    await axios.get("http://localhost:4001/api/todo/lorem", { params: { count: 32 } }).then((result) => {
       setTodos(result.data)
     })
   }
