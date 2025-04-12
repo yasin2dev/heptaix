@@ -2,17 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import dynamic from "next/dynamic";
+import { SidebarProvider } from "@/ui/sidebar";
 
-const Navbar = dynamic(() => import('./components/Navbar'), {ssr: !!false});
+import Sidebar from "./components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -27,12 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar/>
-        {children}
+    <html lang="en" suppressHydrationWarning className={geistSans.className}>
+      <body>
+        <SidebarProvider>
+          <Sidebar />
+            <main className="flex-1">
+              {children}
+            </main>
+        </SidebarProvider>
       </body>
     </html>
   );

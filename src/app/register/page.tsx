@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/ui/button";
+import { Card, CardContent } from "@/ui/card";
+import { Input } from "@/ui/input";
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,7 +16,7 @@ export default function RegisterPage() {
     const [response, setResponse] = useState("");
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-300">
+        <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-300">
             <Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-white">
                 <CardContent>
                     {response === "Register Successful." 
