@@ -39,7 +39,7 @@ const footerItems: SidebarLinks[] = [
   },
 ]
 
-export default function AuthorizatedNav({ user }: SidebarProps) {
+export default function AuthorizedNav({ user }: SidebarProps) {
 
   const pathname = usePathname();
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import UnauthorizatedScreen from "./components/UnauthorizatedScreen";
+import UnauthorizedScreen from "./components/UnauthorizedScreen";
 import MyScreen from "./components/MyScreen";
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
       {
         !authorizated
           ?
-          <UnauthorizatedScreen />
+          <UnauthorizedScreen />
           :
           <MyScreen />
       }

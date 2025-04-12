@@ -31,7 +31,7 @@ const items: SidebarLinks[] = [
   },
 ]
 
-export default function UnauthorizatedNav() {
+export default function UnauthorizedNav() {
   const pathname = usePathname();
 
   return (

@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 
-import AuthorizatedNav from './AuthorizatedNav';
-import UnauthorizatedNav from './UnauthorizatedNav';
+import AuthorizedNav from './AuthorizedSidebar';
+import UnauthorizedNav from './UnauthorizedSidebar';
 
 import { TokenUser } from '../../../server/types';
 
@@ -29,9 +29,9 @@ export default function Sidebar() {
       {
         !isVal
           ?
-          <UnauthorizatedNav />
+          <UnauthorizedNav />
           :
-          <AuthorizatedNav user={user} />
+          <AuthorizedNav user={user} />
       }
     </div>
   )
