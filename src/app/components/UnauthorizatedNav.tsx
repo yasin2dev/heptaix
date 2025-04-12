@@ -1,17 +1,83 @@
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from '@/components/ui/navigation-menu'
+
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
+import { Play, Github, BookOpen } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { TokenUser } from '../../../server/types'
+import { Button } from '@/components/ui/button'
+import { usePathname } from 'next/navigation'
+import { SidebarLinks } from '../types'
+
+
+const items: SidebarLinks[] = [
+  {
+    title: "Getting Started",
+    url: "/getting-started",
+    icon: Play,
+    target: '_self'
+  },
+  {
+    title: "Github",
+    url: "https://github.com/yasin2dev/heptaix",
+    icon: Github,
+    target: '_blank'
+  },
+  {
+    title: "Contact",
+    url: "#",
+    icon: BookOpen,
+    target: '_blank'
+  },
+]
 
 export default function UnauthorizatedNav() {
-    return (
-        <NavigationMenu className="list-none font-semibold gap-4">
-            <NavigationMenuItem>
-                <Link href="/getting-started" legacyBehavior passHref>
-                    <NavigationMenuLink className="list-none hover:underline">
-                        <span className='text-black'>Getting Started</span>
-                    </NavigationMenuLink>
+  const pathname = usePathname();
+
+  return (
+    <Sidebar>
+      <SidebarContent>
+        <SidebarHeader></SidebarHeader>
+        <SidebarGroup>
+          <SidebarGroupLabel className='justify-center mb-8'>
+            <Link href="/">
+              <span className="self-center text-2xl whitespace-nowrap dark:text-white text-amber-600 font-bold italic">Heptaix</span>
+            </Link>
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild isActive={pathname === item.url}>
+                    <Link href={item.url} target={item.target}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu className='items-center'>
+              <div className='flex items-center space-x-6 rtl:space-x-reverse'>
+                <Link href="/login">
+                  <Button className='bg-amber-50 border-2 text-amber-600 border-amber-600 hover:bg-amber-600 hover:text-white cursor-pointer'>
+                    Login
+                  </Button>
                 </Link>
-            </NavigationMenuItem>
-        </NavigationMenu>
-    )
+                <Link href="/register">
+                  <Button className='bg-amber-600 border-2 border-amber-600 hover:bg-amber-50 hover:text-amber-600 cursor-pointer'>
+                    Register
+                  </Button>
+                </Link>
+              </div>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  )
 }
