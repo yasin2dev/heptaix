@@ -1,10 +1,10 @@
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from '@/components/ui/navigation-menu'
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from '@/ui/navigation-menu'
 import Link from 'next/link'
 import React from 'react'
 
 import { SidebarLinks, SidebarProps } from '../types';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/ui/sidebar';
+import { Button } from '@/ui/button';
 import { usePathname } from 'next/navigation';
 import { FiHome, FiGithub, FiBookOpen, FiList } from 'react-icons/fi';
 import ProfileDropdown from './ProfileDropdown';

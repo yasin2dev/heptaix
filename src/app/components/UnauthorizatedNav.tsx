@@ -1,11 +1,11 @@
 
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/ui/sidebar'
 import { Play, Github, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 import { TokenUser } from '../../../server/types'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/ui/button'
 import { usePathname } from 'next/navigation'
 import { SidebarLinks } from '../types'
 

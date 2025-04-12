@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/ui/card";
 import React, { useEffect, useState } from "react";
 import { Todo } from "../../../server/types";
 import axios from "axios";

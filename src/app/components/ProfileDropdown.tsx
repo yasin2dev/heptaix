@@ -1,9 +1,9 @@
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback } from '@/ui/avatar'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/ui/dropdown-menu'
 import React from 'react'
 import { FaCircleUser, FaDoorClosed, FaGear } from 'react-icons/fa6'
 import { ProfileDropdownProps } from '../types'
-import { SidebarMenuButton } from '@/components/ui/sidebar'
+import { SidebarMenuButton } from '@/ui/sidebar'
 
 
 export default function ProfileDropdown({ user }: ProfileDropdownProps) {
