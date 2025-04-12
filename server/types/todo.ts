@@ -3,6 +3,7 @@ import { z } from "zod";
 const zTodo = z.object({
     id: z.number(),
     title: z.string(),
+    textContent: z.string(),
     description: z.string(),
 });
 
