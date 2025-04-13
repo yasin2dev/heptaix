@@ -8,7 +8,7 @@ todoRouter.get("/lorem", (req: Request, res: Response) => {
   const todos: Todo[] = [];
   for (let i: number = 1; i <= Number(count); i++) {
     const todo: Todo = {
-      id: i,
+      id: randomUUID(),
       title: `Todo ${i}`,
       textContent: `Lorem ipsum dolor sit amet consectetur adipisicing elit. 
                     Voluptatum explicabo quia dolores ducimus beatae repellendus nesciunt reprehenderit obcaecati
