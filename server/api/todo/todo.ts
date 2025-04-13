@@ -36,8 +36,6 @@ todoRouter.get("/list", (req: Request, res: Response) => {
   const jwtToken = authHeader.split(' ')[1];
   const jwtSecret = process.env.JWT_SECRET_KEY;
 
-  console.log(jwtToken);
-
   if (!jwtSecret) throw new Error("JWT Secret Key is not defined in .env file");
   const decodedToken = jwt.verify(jwtToken, jwtSecret) as JwtPayload;
   

@@ -16,7 +16,6 @@ userRoute.post('/register', async (req: Request, res: Response) => {
         const hashedPassword: string = await bcrypt.hash(password, 12);
         // TODO: Declared but never used. Zod validation system messages added. eg. invalid email
         const validation = zRegisterUser.parse({ name: name, surname: surname, username: username, email: email, hash: hashedPassword });
-        console.log(validation.email);
         createUser(name, surname, username, email, hashedPassword).then(() => res.status(201).send("Register Successful."));
     } catch (e) {
         if (!catchZodError(e, zodErrorMessages.email)) res.send("Invalid email format.");
@@ -40,7 +39,6 @@ userRoute.post('/login', async (req: Request, res: Response) => {
                     res.status(401).send("User credentials is not true")
                 }
             })
-            console.log(data)
         })
         .catch((e) => console.error(e))
 })
