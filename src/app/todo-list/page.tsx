@@ -1,5 +1,10 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+import { Input } from "@/ui/input";
+import { Button } from "@/ui/button";
 import {
   Card,
   CardContent,
@@ -8,20 +13,37 @@ import {
   CardHeader,
   CardTitle,
 } from "@/ui/card";
-import React, { useEffect, useState } from "react";
-import { Todo } from "../../../server/types";
-import axios from "axios";
-import Image from "next/image";
+
+import type { CreateTodo, Todo } from "../../../server/types";
 
 export default function TodoListComponent() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
+  const [userToken, setUserToken] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
+    const token = localStorage.getItem("JWT_TOKEN");
+    if (token) {
+      setUserToken(token);
+    }
+    if (userToken) {
     handleTodo();
-  }, []);
+    }
+  }, [userToken]);
 
   return (
     <div className="container flex-auto flex-wrap max-h-screen m-auto space-x-2">
+      <div className="flex mt-8">
+        <Input
+          className="m-4"
+          placeholder="Todo Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <Button className="m-4 bg-accent-foreground" onClick={handleCreateTodo}>
+          Create Todo
+        </Button>
+      </div>
       {todos.map((a: Todo) => (
         <Card key={a.id} className="w-auto mt-8">
           <CardHeader>
@@ -44,5 +66,23 @@ export default function TodoListComponent() {
       .then((result) => {
         setTodos(result.data);
       });
+  }
+
+  async function handleCreateTodo() {
+    const formData: CreateTodo = {
+      title: title,
+      description: 'Test Creation',
+      textContent: 'Text Content Test',
+    }
+    await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/create`, formData, {
+      headers: {
+        Authorization: `Bearer ${userToken}`
+      }
+    }).then((result) => {
+      if (result.status === 200) {
+        const resultData = result.data
+        setTodos(prev => [...prev, resultData]);
+      }
+    }).finally(() => handleTodo());
   }
 }
