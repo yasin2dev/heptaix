@@ -1,9 +1,10 @@
 import { Router, Request, Response } from "express";
 import { randomUUID } from "crypto";
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
 
 import type { Todo } from "../../types/todo";
 import { createTodo, listTodos } from "../../db";
+import verifyToken from "../../helper/auth/jwtToken";
 
 const todoRouter = Router();
 
@@ -28,47 +29,33 @@ todoRouter.get("/lorem", (req: Request, res: Response) => {
 
 todoRouter.get("/list", (req: Request, res: Response) => {
   const authHeader = req.headers['authorization'];
-  if (!authHeader) {
-    res.sendStatus(401);
-    return;
-  }
-
-  const jwtToken = authHeader.split(' ')[1];
-  const jwtSecret = process.env.JWT_SECRET_KEY;
-
-  if (!jwtSecret) throw new Error("JWT Secret Key is not defined in .env file");
-  const decodedToken = jwt.verify(jwtToken, jwtSecret) as JwtPayload;
-  
-  try {
-    listTodos(decodedToken.id).then((result) => {
+  const jwtResult = verifyToken(authHeader)
+  if (!jwtResult) {
+    res.status(500).send("Internal Server Error");
+  } else if (jwtResult.success) {
+    listTodos(jwtResult.payload.id).then((result) => {
       res.status(200).json(result)
     })
-  } catch (e) {
-    console.error(e);
+  } else {
+    res.status(400).send(jwtResult.error)
   }
 })
 
 todoRouter.post("/create", (req: Request, res: Response) => {
   const authHeader = req.headers['authorization'];
-  if (!authHeader) {
-    res.sendStatus(401);
-    return;
-  }
-
-  const jwtToken = authHeader.split(' ')[1];
-  const jwtSecret = process.env.JWT_SECRET_KEY;
-
-  if (!jwtSecret) throw new Error("JWT Secret Key is not defined in .env file");
-  const decodedToken = jwt.verify(jwtToken, jwtSecret) as JwtPayload;
+  const jwtResult = verifyToken(authHeader);
 
   const { title, description, textContent } = req.body;
-  const todoId = randomUUID();
+  if (!title || !textContent || title === "" || textContent === "") { res.sendStatus(400); return; }
 
-  try {
-    createTodo(todoId, title, textContent, decodedToken.id, description);
+  if (!jwtResult) {
+    res.status(500).send("Internal Server Error");
+  } else if (jwtResult.success) {
+    const todoId = randomUUID();
+    createTodo(todoId, title, textContent, jwtResult.payload.id, description);
     res.status(201).json({ todoId, title, description, textContent });
-  } catch (e) {
-    console.error(e);
+  } else {
+    res.status(406).send(jwtResult.error)
   }
 })
 

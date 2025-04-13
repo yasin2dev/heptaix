@@ -5,6 +5,7 @@ import "./globals.css";
 import { SidebarProvider } from "@/ui/sidebar";
 
 import Sidebar from "./components/Sidebar";
+import { Toaster } from "@/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,9 +27,10 @@ export default function RootLayout({
       <body>
         <SidebarProvider>
           <Sidebar />
-            <main className="flex-1">
-              {children}
-            </main>
+          <main className="flex-1">
+            {children}
+          </main>
+          <Toaster />
         </SidebarProvider>
       </body>
     </html>

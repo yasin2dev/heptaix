@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
+import { toast } from "sonner";
+
 import {
   Card,
   CardContent,
@@ -62,15 +64,30 @@ export default function TodoListComponent() {
   );
 
   async function handleTodo() {
-    await axios
-      .get(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/list`, {
+    try {
+      await axios.get(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/list`, {
         headers: {
           Authorization: `Bearer ${userToken}`
         }
-      })
-      .then((result) => {
+      }).then((result) => {
         setTodos(result.data);
-      });
+      })
+    } catch (error) {
+      const axiosError = error as AxiosError<{ data: string }>;
+      if (axiosError.response?.data.toString().startsWith("Session")) {
+        setInterval(() => {
+          localStorage.removeItem("JWT_TOKEN");
+          window.location.href = "/login"
+        }, 3000)
+        toast.error(axiosError.response?.data.toString(), {
+          closeButton: true,
+          richColors: true,
+          description: "Your session has expired. Redirecting to login page in 3s"
+        })
+      } else {
+        console.error(error);
+      }
+    }
   }
 
   async function handleCreateTodo() {
@@ -79,15 +96,35 @@ export default function TodoListComponent() {
       description: 'Test Creation',
       textContent: 'Text Content Test',
     }
-    await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/create`, formData, {
-      headers: {
-        Authorization: `Bearer ${userToken}`
+    try {
+      await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/create`, formData, {
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        }
+      }).then((result) => {
+        setTodos(prev => [...prev, result.data]);
+      })
+    } catch (error) {
+      const axiosError = error as AxiosError<{ data: string }>;
+      if (axiosError.response?.data.toString().startsWith("Session")) {
+        setInterval(() => {
+          localStorage.removeItem("JWT_TOKEN");
+          window.location.href = "/login"
+        }, 3000)
+        toast.error(axiosError.response?.data.toString(), {
+          closeButton: true,
+          richColors: true,
+          description: "Your session has expired. Redirecting to login page in 3s"
+        })
+      } else if (title.trim() === "") {
+        toast.error("Oops! Looks like you missed some fields.", {
+          closeButton: true,
+          richColors: true,
+          description: "Please fill in the required fields."
+        })
+      } else {
+        console.error(error);
       }
-    }).then((result) => {
-      if (result.status === 200) {
-        const resultData = result.data
-        setTodos(prev => [...prev, resultData]);
-      }
-    }).finally(() => handleTodo());
+    }
   }
 }
