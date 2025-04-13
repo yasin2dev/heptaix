@@ -5,7 +5,6 @@ import { listUsers } from '../../db/user/list';
 import { createUser } from '../../db/user/create';
 import { getUser } from '../../db/user/get';
 import { zRegisterUser } from '../../types';
-import { ZodError } from 'zod';
 import { catchZodError, zodErrorMessages } from '../../helper';
 
 const userRoute = Router()
