@@ -9,7 +9,7 @@ SELECT
   * 
 FROM 
   "public"."todos"
-WHERE userId = ${userId}
+WHERE "userId" = ${userId}
 `;
     const [error4sql, result] = await to(SQL);
     if (error4sql) throw error4sql;
