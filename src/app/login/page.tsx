@@ -72,7 +72,7 @@ export default function LoginPage() {
         email: email.trim(),
         password: password,
       }
-      await axios.post("http://localhost:4001/api/user/login", formData)
+      await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/user/login`, formData)
         .then((resp) => {
           let token = localStorage.getItem("JWT_TOKEN");
           if (!token) {

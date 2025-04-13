@@ -40,7 +40,7 @@ export default function TodoListComponent() {
   );
   async function handleTodo() {
     await axios
-      .get("http://localhost:4001/api/todo/lorem", { params: { count: 5 } })
+      .get(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/lorem`, { params: { count: 5 } })
       .then((result) => {
         setTodos(result.data);
       });

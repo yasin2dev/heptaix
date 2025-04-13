@@ -81,7 +81,7 @@ export default function RegisterPage() {
                 username: username.trim(),
                 password: password,
             };
-            await axios.post("http://localhost:4001/api/user/register", formData).then((resp) => {
+            await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/user/register`, formData).then((resp) => {
                 if (resp.status === 201) {
                     setResponse(resp.data)
                     setInterval(() => {
