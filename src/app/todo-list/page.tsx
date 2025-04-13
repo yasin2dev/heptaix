@@ -27,7 +27,7 @@ export default function TodoListComponent() {
       setUserToken(token);
     }
     if (userToken) {
-    handleTodo();
+      handleTodo();
     }
   }, [userToken]);
 
@@ -60,9 +60,14 @@ export default function TodoListComponent() {
       ))}
     </div>
   );
+
   async function handleTodo() {
     await axios
-      .get(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/lorem`, { params: { count: 5 } })
+      .get(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/list`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        }
+      })
       .then((result) => {
         setTodos(result.data);
       });
