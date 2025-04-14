@@ -9,6 +9,8 @@ SELECT
 FROM 
   "public"."todos" t
 WHERE "userId" = ${userId}
+ORDER BY
+  t."createdAt" DESC;
 `;
     const [error4sql, result] = await to(SQL);
     if (error4sql) throw error4sql;
