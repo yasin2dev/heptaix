@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import { randomUUID } from "crypto";
 
 import { createTodo, listTodos } from "../../db";
-import verifyToken from "../../helper/auth/jwtToken";
+import { verifyToken } from "../../helper";
 
 const todoRouter = Router();
 

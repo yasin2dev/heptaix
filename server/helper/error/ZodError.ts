@@ -1,5 +1,3 @@
-import { ZodError } from "zod";
-
 export const zodErrorMessages = { 
     email: 'Invalid email'
 }

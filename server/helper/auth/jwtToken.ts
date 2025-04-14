@@ -3,7 +3,7 @@ import type { VerifiedTokenResultError, VerifiedTokenResultSuccess } from "../..
 
 type VerifiedTokenResult = VerifiedTokenResultSuccess | VerifiedTokenResultError;
 
-export default function verifyToken(authHeader: string | undefined): VerifiedTokenResult {
+export function verifyToken(authHeader: string | undefined): VerifiedTokenResult {
   if (!authHeader) {
     return { success: false, error: "Authorization header is missing." };
   }
