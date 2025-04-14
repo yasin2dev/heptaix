@@ -6,6 +6,9 @@ import axios, { AxiosError } from "axios";
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { toast } from "sonner";
+import { Textarea } from "@/ui/textarea";
+
+import { Plus } from "lucide-react";
 
 import {
   Card,
@@ -15,6 +18,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/ui/card";
+import { 
+  Dialog,
+  DialogClose, 
+  DialogContent, 
+  DialogFooter,
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/ui/dialog";
 
 import type { CreateTodo, Todo } from "../../../server/types";
 import { epochToDateString } from "../../../server/helper";
@@ -22,7 +34,9 @@ import { epochToDateString } from "../../../server/helper";
 export default function TodoListComponent() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
   const [userToken, setUserToken] = useState<string | null>(null);
-  const [title, setTitle] = useState<string>("");
+  const [todoTitle, setTodoTitle] = useState<string>("");
+  const [todoDescription, setTodoDescription] = useState<string>("");
+  const [textContent, setTextContent] = useState<string>("");
 
   useEffect(() => {
     const token = localStorage.getItem("JWT_TOKEN");
@@ -35,33 +49,48 @@ export default function TodoListComponent() {
   }, [userToken]);
 
   return (
-    <div className="container flex-auto flex-wrap max-h-screen m-auto space-x-2">
-      <div className="flex mt-8">
-        <Input
-          className="m-4"
-          placeholder="Todo Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <Button className="m-4 bg-accent-foreground" onClick={handleCreateTodo}>
-          Create Todo
-        </Button>
+    <>
+      <div className="container m-auto ml-auto flex mt-8 space-x-2 justify-end w-full">
+        <Dialog >
+          <DialogTrigger asChild>
+            <Button className="bg-accent-foreground hover:cursor-pointer">
+              <Plus />Create
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]" onInteractOutside={(e) => e.preventDefault()}>
+            <DialogHeader>
+              <DialogTitle>Create Todo</DialogTitle>
+            </DialogHeader>
+            <div className="gap-4 space-y-4 py-4">
+              <Input id="todoTitle" placeholder="Todo Title" className="col-span-3" autoComplete="off" onChange={(e) => setTodoTitle(e.target.value)} />
+              <Input id="todoDescription" placeholder="Todo Description" className="col-span-3" autoComplete="off" onChange={(e) => setTodoDescription(e.target.value)} />
+              <Textarea placeholder="Todo Content" onChange={(e) => setTextContent(e.target.value)}/>
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button className="w-full hover:cursor-pointer" type="submit" onClick={handleCreateTodo}>Create</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
-      {todos.map((a: Todo) => (
-        <Card key={a.todoId} className="w-auto mt-8">
-          <CardHeader>
-            <CardTitle>{a.title}</CardTitle>
-            <CardDescription>{a.description}</CardDescription>
-          </CardHeader>
-          <CardContent className="max-h-[6rem]">
-            {a.textContent}
-          </CardContent>
-          <CardFooter>
-            <p className="text-xs">{epochToDateString(a.createdAt)}</p>
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
+      <div className="container flex-col-reverse max-h-screen m-auto space-x-2 gap-10">
+        {todos.map((a: Todo) => (
+          <Card key={a.todoId} className="w-auto mt-8 gap-2 ">
+            <CardHeader className="space-y-0">
+              <CardTitle>{a.title}</CardTitle>
+              <CardDescription>{a.description}</CardDescription>
+            </CardHeader>
+            <CardContent className="max-h-[6rem] whitespace-pre-wrap">
+              {a.textContent}
+            </CardContent>
+            <CardFooter className="flex justify-end w-full mt-4">
+              <p className="text-xs">{epochToDateString(a.createdAt)}</p>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </>
   );
 
   async function handleTodo() {
@@ -93,19 +122,19 @@ export default function TodoListComponent() {
 
   async function handleCreateTodo() {
     const formData: CreateTodo = {
-      title: title,
-      description: 'Test Creation',
-      textContent: 'Text Content Test',
+      title: todoTitle,
+      description: todoDescription,
+      textContent: textContent,
       createdAt: new Date(Date.now()).getTime(),
     }
     try {
-    await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/create`, formData, {
+      await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/create`, formData, {
         headers: {
           Authorization: `Bearer ${userToken}`
         }
       }).then((result) => {
         setTodos(prev => [...prev, result.data]);
-      })
+      }).finally(() => handleTodo())
     } catch (error) {
       const axiosError = error as AxiosError<{ data: string }>;
       if (axiosError.response?.data.toString().startsWith("Session")) {
@@ -118,7 +147,7 @@ export default function TodoListComponent() {
           richColors: true,
           description: "Your session has expired. Redirecting to login page in 3s"
         })
-      } else if (title.trim() === "") {
+      } else if (todoTitle.trim() === "") {
         toast.error("Oops! Looks like you missed some fields.", {
           closeButton: true,
           richColors: true,
