@@ -17,6 +17,7 @@ import {
 } from "@/ui/card";
 
 import type { CreateTodo, Todo } from "../../../server/types";
+import { epochToDateString } from "../../../server/helper";
 
 export default function TodoListComponent() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
@@ -47,7 +48,7 @@ export default function TodoListComponent() {
         </Button>
       </div>
       {todos.map((a: Todo) => (
-        <Card key={a.id} className="w-auto mt-8">
+        <Card key={a.todoId} className="w-auto mt-8">
           <CardHeader>
             <CardTitle>{a.title}</CardTitle>
             <CardDescription>{a.description}</CardDescription>
@@ -56,7 +57,7 @@ export default function TodoListComponent() {
             {a.textContent}
           </CardContent>
           <CardFooter>
-            <p className="text-xs">01/01/1970</p>
+            <p className="text-xs">{epochToDateString(a.createdAt)}</p>
           </CardFooter>
         </Card>
       ))}
@@ -95,9 +96,10 @@ export default function TodoListComponent() {
       title: title,
       description: 'Test Creation',
       textContent: 'Text Content Test',
+      createdAt: new Date(Date.now()).getTime(),
     }
     try {
-      await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/create`, formData, {
+    await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/create`, formData, {
         headers: {
           Authorization: `Bearer ${userToken}`
         }

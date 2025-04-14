@@ -5,9 +5,9 @@ import { Todo, User } from "../../types";
 export async function listTodos(userId: string): Promise<Todo[]> {
     const SQL = DB<Todo[]>`
 SELECT
-  * 
+  t."todoId", t."title", t."textContent", t."description", t."createdAt"
 FROM 
-  "public"."todos"
+  "public"."todos" t
 WHERE "userId" = ${userId}
 `;
     const [error4sql, result] = await to(SQL);
