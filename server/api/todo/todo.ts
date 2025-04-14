@@ -8,25 +8,6 @@ import verifyToken from "../../helper/auth/jwtToken";
 
 const todoRouter = Router();
 
-
-todoRouter.get("/lorem", (req: Request, res: Response) => {
-  const { count } = req.query;
-  const todos: Todo[] = [];
-  for (let i: number = 1; i <= Number(count); i++) {
-    const todo: Todo = {
-      id: randomUUID(),
-      title: `Todo ${i}`,
-      textContent: `Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                    Voluptatum explicabo quia dolores ducimus beatae repellendus nesciunt reprehenderit obcaecati
-                    rem unde aperiam nobis iusto ad maxime ex eius, recusandae illo corrupti.`,
-      description: `Todo Description ${i}`
-    };
-    todos.push(todo);
-  }
-  res.status(200).json(todos);
-})
-
-
 todoRouter.get("/list", (req: Request, res: Response) => {
   const authHeader = req.headers['authorization'];
   const jwtResult = verifyToken(authHeader)
