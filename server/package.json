@@ -4,6 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "nodemon src/index.ts",
+    "migrate": "ts-node src/db/migrate.ts",
     "build": "tsc",
     "serve": "nodemon dist/index.js"
   },
