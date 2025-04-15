@@ -7,8 +7,8 @@ export async function createUser(name: string, surname: string, username: string
 
     const SQL = DB<RegisterUser[]>`
 INSERT INTO 
-    users 
-    (name, surname, username, email, hash) 
+    "auth"."users" 
+    ("name", "surname", "username", "email", "hash") 
 VALUES 
     (${name}, ${surname}, ${username}, ${email}, ${hash})
 `;

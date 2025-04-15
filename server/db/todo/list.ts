@@ -7,7 +7,7 @@ export async function listTodos(userId: string): Promise<Todo[]> {
 SELECT
   t."todoId", t."title", t."textContent", t."description", t."createdAt"
 FROM 
-  "public"."todos" t
+  "todo"."todos" t
 WHERE "userId" = ${userId}
 ORDER BY
   t."createdAt" DESC;

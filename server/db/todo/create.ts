@@ -9,7 +9,7 @@ export async function createTodo(todoId: UUID, title: string, textContent: strin
 
     const SQL = DB<Todo[]>`
 INSERT INTO 
-    "public"."todos"
+    "todo"."todos"
     ("todoId", "title", "textContent", "description", "userId", "createdAt") 
 VALUES 
     (${todoId}, ${title}, ${textContent}, ${description}, ${userId}, ${createdAt})

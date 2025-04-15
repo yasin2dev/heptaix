@@ -7,8 +7,8 @@ export async function getUser(email: string): Promise<User[]> {
 SELECT
   *
 FROM 
-  users
-WHERE email = ${email}
+  "auth"."users"
+WHERE "email" = ${email}
 `;
 
     const [error4sql, result] = await to(SQL);
