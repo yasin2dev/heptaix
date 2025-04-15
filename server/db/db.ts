@@ -1,5 +1,7 @@
 import postgres from 'postgres'
 import { DBOptions } from '../types'
+import dotenv from 'dotenv';
+dotenv.config();
 
 const options: DBOptions = {
     host:           process.env?.['DB_HOST'] || 'localhost',
