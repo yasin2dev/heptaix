@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <h2 align="center">Heptaix - Web Based Todo App</h2>
+</p>
 
-## Getting Started
+<div align="center">
+    <img src="./res/badges/node.svg"/>
+    <img src="./res/badges/react.svg"/>
+    <img src="./res/badges/postgresql.svg"/>
+</div>
 
-First, run the development server:
+Built with PostgreSQL 16, Next.js 15 & React.js 19 and TypeScript.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+## Installation
+
+- <p>Install project source code via: <code>git clone https://github.com/yasin2dev/heptaix.git</code></p>
+
+- <p>Open the command line within the downloaded folder, navigate to the server and client directories, and run the command <code>npm i</code>:</p>
+
+For server-side;
+```cmd
+    C:\heptaix> npm i
 ```
+For client (front-end) side;
+```cmd
+    C:\heptaix> cd server
+    C:\heptaix\server> npm i
+```
+- To complete the database configuration, you need to create and edit the <code>.env</code> file.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Database
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a database in PostgreSQL. (via psql or any database viewer)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Run the command ``` npm run migrate ``` for run all migrations. It creates the schemas and tables for project. Database creation not provided for this version. 
 
-## Learn More
+You are ready to go!
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Run Project
+- For running front-end:
+```cmd
+    C:\heptaix> npm run dev
+```
+- For running the server:
+```cmd
+    C:\heptaix> cd server
+    C:\heptaix\server> npm run start
+```
