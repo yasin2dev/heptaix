@@ -74,14 +74,14 @@ export default function TodoListComponent() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="container flex-col-reverse max-h-screen m-auto space-x-2 gap-10">
+      <div className="container flex-col-reverse max-h-screen m-auto gap-10">
         {todos.map((a: Todo) => (
           <Card key={a.todoId} className="w-auto mt-8 gap-2 ">
             <CardHeader className="space-y-0">
               <CardTitle>{a.title}</CardTitle>
               <CardDescription>{a.description}</CardDescription>
             </CardHeader>
-            <CardContent className="max-h-[6rem] whitespace-pre-wrap">
+            <CardContent className="max-h-[6rem] whitespace-pre-wrap line-clamp-3">
               {a.textContent}
             </CardContent>
             <CardFooter className="flex justify-end w-full mt-4">
@@ -134,6 +134,9 @@ export default function TodoListComponent() {
         }
       }).then((result) => {
         setTodos(prev => [...prev, result.data]);
+        setTextContent("");
+        setTodoTitle("");
+        setTodoDescription("");
       }).finally(() => handleTodo())
     } catch (error) {
       const axiosError = error as AxiosError<{ data: string }>;
