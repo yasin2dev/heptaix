@@ -17,11 +17,11 @@ Built with PostgreSQL 16, Next.js 15 & React.js 19 and TypeScript.
 
 - <p>Open the command line within the downloaded folder, navigate to the server and client directories, and run the command <code>npm i</code>:</p>
 
-For server-side;
+For client-side;
 ```cmd
     C:\heptaix> npm i
 ```
-For client (front-end) side;
+For server side;
 ```cmd
     C:\heptaix> cd server
     C:\heptaix\server> npm i
@@ -46,3 +46,7 @@ You are ready to go!
     C:\heptaix> cd server
     C:\heptaix\server> npm run start
 ```
+
+### Environments
+
+Please see the `.env.sample` file in root directory and `server/` directory. Port, database name, username, password and other parameters located in this file.
