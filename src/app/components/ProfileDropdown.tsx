@@ -1,18 +1,25 @@
-import { Avatar, AvatarFallback } from '@/ui/avatar'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/ui/dropdown-menu'
-import React from 'react'
-import { FaCircleUser, FaDoorClosed, FaGear } from 'react-icons/fa6'
-import { ProfileDropdownProps } from '../types'
-import { SidebarMenuButton } from '@/ui/sidebar'
+import React from 'react';
+
+import { FaCircleUser, FaDoorClosed, FaGear } from 'react-icons/fa6';
+
+import { Avatar, AvatarFallback } from '@/ui/avatar';
+import { SidebarMenuButton } from '@/ui/sidebar';
+import { 
+  DropdownMenu,
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/ui/dropdown-menu';
+
+import { ProfileDropdownProps } from '../types';
+
+import { useAuth } from '../contexts/AuthContext';
 
 
 export default function ProfileDropdown({ user }: ProfileDropdownProps) {
-
-  const handleLogout = () => {
-    localStorage.removeItem("JWT_TOKEN");
-    localStorage.removeItem("USER");
-    window.location.href = "/";
-  }
+  const { logout } = useAuth();
 
   return (
     <DropdownMenu>
@@ -30,7 +37,7 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
         <DropdownMenuItem>Profile <FaCircleUser /></DropdownMenuItem>
         <DropdownMenuItem>Settings <FaGear /></DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>Log out <FaDoorClosed /></DropdownMenuItem>
+        <DropdownMenuItem onClick={logout}>Log out <FaDoorClosed /></DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
