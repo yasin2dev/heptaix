@@ -150,7 +150,7 @@ export default function TodoListComponent() {
           richColors: true,
           description: "Your session has expired. Redirecting to login page in 3s"
         })
-      } else if (todoTitle.trim() === "") {
+      } else if (todoTitle.trim() === "" || textContent.trim() === "") {
         toast.error("Oops! Looks like you missed some fields.", {
           closeButton: true,
           richColors: true,
