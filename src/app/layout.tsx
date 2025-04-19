@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 
 import { SidebarProvider } from "@/ui/sidebar";
+import { Toaster } from "@/ui/sonner";
 
 import Sidebar from "./components/Sidebar";
-import { Toaster } from "@/ui/sonner";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={geistSans.className}>
       <body>
-        <SidebarProvider>
-          <Sidebar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Toaster />
-        </SidebarProvider>
+        <AuthProvider>
+          <SidebarProvider>
+            <Sidebar />
+            <main className="flex-1">{children}</main>
+            <Toaster />
+          </SidebarProvider>
+        </AuthProvider>
       </body>
     </html>
   );

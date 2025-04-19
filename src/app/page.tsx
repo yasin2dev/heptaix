@@ -1,30 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import UnauthorizedScreen from "./components/UnauthorizedScreen";
 import MyScreen from "./components/MyScreen";
+import LoadingScreen from "./components/LoadingScreen";
+import { useAuth } from "./contexts/AuthContext";
 
 export default function Home() {
-  const [authorizated, setAuthorizated] = useState<boolean>(false);
+  const { loading, isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    const token = localStorage.getItem("JWT_TOKEN");
-    if (token) {
-      setAuthorizated(true);
-    }
-  }, [])
+  if (loading) {
+    return <LoadingScreen/>
+  }
 
-  return (
-    <>
-      {
-        !authorizated
-          ?
-          <UnauthorizedScreen />
-          :
-          <MyScreen />
-      }
-    </>
-  );
+  return isAuthenticated ? <MyScreen /> : <UnauthorizedScreen />;
 }
-

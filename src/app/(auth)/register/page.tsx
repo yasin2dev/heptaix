@@ -1,11 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+import { toast } from "sonner";
 import { Button } from "@/ui/button";
 import { Card, CardContent } from "@/ui/card";
 import { Input } from "@/ui/input";
-import axios from "axios";
-import Link from "next/link";
-import { useState } from "react";
+
+import LoadingScreen from "@/app/components/LoadingScreen";
+import { useAuth } from "@/app/contexts/AuthContext";
 
 export default function RegisterPage() {
     const [name, setName] = useState("");
@@ -14,6 +21,26 @@ export default function RegisterPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [response, setResponse] = useState("");
+    const { loading, isAuthenticated } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+      if (!loading && isAuthenticated) {
+        router.push("/");
+      }
+    }, [isAuthenticated, loading, router]);
+  
+    if (loading) {
+      return <LoadingScreen />;
+    }
+  
+    if (isAuthenticated) {
+      return toast.warning("Oops! Looks like you already logged in.", {
+        closeButton: true,
+        richColors: true,
+        description: 'If you want to create new account please logout first >-<'
+      });
+    }
 
     return (
         <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-300">
