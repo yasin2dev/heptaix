@@ -1,11 +1,10 @@
-import React from 'react'
+import React from "react";
+import DualChartCard from "./charts/PieChart";
 
 export default function MyScreen() {
   return (
-    <div className='bg-primary p-4 m-4 rounded-md'>
-      <div className="text-center">
-        <span className='font-bold text-2xl text-secondary'>My Screen</span>
-      </div>
+    <div className="container lex min-h-screen items-center justify-center p-4">
+      <DualChartCard />
     </div>
-  )
+  );
 }
