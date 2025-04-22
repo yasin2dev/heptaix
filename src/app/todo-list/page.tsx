@@ -28,25 +28,28 @@ import {
   DialogTrigger 
 } from "@/ui/dialog";
 
+    import LoadingScreen from "../components/LoadingScreen";
+import { useAuth } from "../contexts/AuthContext";
+
 import type { CreateTodo, Todo } from "../../../server/types";
 import { epochToDateString } from "../../../server/helper";
 
 export default function TodoListComponent() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
-  const [userToken, setUserToken] = useState<string | null>(null);
   const [todoTitle, setTodoTitle] = useState<string>("");
   const [todoDescription, setTodoDescription] = useState<string>("");
   const [textContent, setTextContent] = useState<string>("");
+  const { loading, user } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem("JWT_TOKEN");
-    if (token) {
-      setUserToken(token);
-    }
-    if (userToken) {
+    if (user?.token) {
       handleTodo();
     }
-  }, [userToken]);
+  }, [user?.token]);
+
+  if (loading) {
+    return <LoadingScreen />
+  }
 
   return (
     <>
@@ -97,7 +100,7 @@ export default function TodoListComponent() {
     try {
       await axios.get(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/list`, {
         headers: {
-          Authorization: `Bearer ${userToken}`
+          Authorization: `Bearer ${user?.token}`
         }
       }).then((result) => {
         setTodos(result.data);
@@ -130,7 +133,7 @@ export default function TodoListComponent() {
     try {
       await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/create`, formData, {
         headers: {
-          Authorization: `Bearer ${userToken}`
+          Authorization: `Bearer ${user?.token}`
         }
       }).then((result) => {
         setTodos(prev => [...prev, result.data]);
