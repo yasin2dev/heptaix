@@ -6,7 +6,7 @@ const zUser = z.object({
     surname: z.string(),
     email: z.string().email(),
     username: z.string(),
-    token: z.string(),
+    token: z.string().optional(),
     hash: z.string()
 });
 
