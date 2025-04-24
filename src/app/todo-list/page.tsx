@@ -32,7 +32,7 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 
 import type { CreateTodo, Todo } from "../../../server/types";
-import { epochToDateString } from "../../../server/helper";
+import { epochToDateString, isWhitespaceOnly } from "../../../server/helper";
 
 export default function TodoListComponent() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
@@ -125,9 +125,9 @@ export default function TodoListComponent() {
 
   async function handleCreateTodo() {
     const formData: CreateTodo = {
-      title: todoTitle,
-      description: todoDescription,
-      textContent: textContent,
+      title: todoTitle.trim(),
+      description: todoDescription.trim(),
+      textContent: textContent.trim(),
       createdAt: new Date(Date.now()).getTime(),
     }
     try {
@@ -153,7 +153,7 @@ export default function TodoListComponent() {
           richColors: true,
           description: "Your session has expired. Redirecting to login page in 3s"
         })
-      } else if (todoTitle.trim() === "" || textContent.trim() === "") {
+      } else if (isWhitespaceOnly(todoTitle) || isWhitespaceOnly(todoDescription) || isWhitespaceOnly(textContent)) {
         toast.error("Oops! Looks like you missed some fields.", {
           closeButton: true,
           richColors: true,
