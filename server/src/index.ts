@@ -1,7 +1,7 @@
-import express, {Request, Response} from 'express'; 
-import bodyParser from 'body-parser';
+import express, {Request, Response} from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import "tsconfig-paths/register";
 
 import userRoute from '../api/users/user'
 import todoRouter from '../api/todo/todo';

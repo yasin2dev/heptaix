@@ -1,6 +1,8 @@
 import postgres from 'postgres'
-import { DBOptions } from '../types'
 import dotenv from 'dotenv';
+
+import type { DBOptions } from '@server/types'
+
 dotenv.config();
 
 const options: DBOptions = {

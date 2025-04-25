@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-import { DB } from '../../db/db'
+
+import { DB } from '@server/db'
 
 async function createMigrationsTable() {
   await DB`
