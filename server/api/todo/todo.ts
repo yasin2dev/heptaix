@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
 import { randomUUID } from "crypto";
 
-import { createTodo, listTodos } from "../../db";
-import { verifyToken } from "../../helper";
+import { createTodo, listTodos } from "@server/db";
+import { verifyToken } from "../../auth/index";
 
 const todoRouter = Router();
 

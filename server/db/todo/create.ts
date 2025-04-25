@@ -1,7 +1,8 @@
 import to from "await-to-js";
-import { DB } from "../../db/db";
-import { Todo } from "../../types";
 import { UUID } from "crypto";
+
+import { DB } from "@server/db";
+import type { Todo } from "@server/types";
 
 export async function createTodo(todoId: UUID, title: string, textContent: string, userId: UUID, createdAt: number, description?: string | null): Promise<Todo[]> {
     if (!todoId || !title || !textContent || !userId) return [];

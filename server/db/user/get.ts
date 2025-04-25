@@ -1,6 +1,7 @@
 import to from "await-to-js";
-import { DB } from "../../db/db";
-import { User } from "../../types";
+
+import { DB } from "@server/db";
+import type { User } from "@server/types";
 
 export async function getUser(email: string): Promise<User[]> {
     const SQL = DB<User[]>`

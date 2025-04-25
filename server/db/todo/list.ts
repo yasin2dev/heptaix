@@ -1,6 +1,7 @@
 import to from "await-to-js";
-import { DB } from "../../db/db";
-import { Todo, User } from "../../types";
+
+import { DB } from "@server/db";
+import type { Todo } from "@server/types";
 
 export async function listTodos(userId: string): Promise<Todo[]> {
     const SQL = DB<Todo[]>`

@@ -1,11 +1,10 @@
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { listUsers } from '../../db/user/list';
-import { createUser } from '../../db/user/create';
-import { getUser } from '../../db/user/get';
-import { zRegisterUser } from '../../types';
-import { catchZodError, zodErrorMessages } from '../../helper';
+
+import { listUsers, createUser, getUser } from '@server/db';
+import { zRegisterUser } from '@server/types';
+import { catchZodError, zodErrorMessages } from '@common/helpers';
 
 const userRoute = Router()
 

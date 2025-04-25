@@ -1,6 +1,7 @@
 import to from "await-to-js";
-import { DB } from "../../db/db";
-import { RegisterUser } from "../../types";
+
+import { DB } from "@server/db";
+import type { RegisterUser } from "@server/types";
 
 export async function createUser(name: string, surname: string, username: string, email: string, hash: string): Promise<RegisterUser[]> {
     if (!name || !surname || !username) return [];
