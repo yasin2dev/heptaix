@@ -124,7 +124,7 @@ export default function TodoListComponent() {
   async function handleTodo() {
     try {
       await axios
-        .get(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/list`, {
+        .get(`${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/list`, {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
@@ -161,7 +161,7 @@ export default function TodoListComponent() {
     try {
       await axios
         .post(
-          `http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/todo/create`,
+          `${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/create`,
           formData,
           {
             headers: {

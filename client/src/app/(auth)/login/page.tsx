@@ -99,7 +99,7 @@ export default function LoginPage() {
       };
       await axios
         .post(
-          `http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/user/login`,
+          `${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/user/login`,
           formData
         )
         .then((resp) => {
