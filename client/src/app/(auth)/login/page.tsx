@@ -92,7 +92,7 @@ export default function LoginPage() {
   );
 
   async function handleLoginUser() {
-    if ((email && password !== "") || "" || null) {
+    if (email && password) {
       const formData = {
         email: email.trim(),
         password: password,

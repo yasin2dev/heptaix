@@ -152,6 +152,18 @@ export default function TodoListComponent() {
   }
 
   async function handleCreateTodo() {
+    if (
+      isWhitespaceOnly(todoTitle) ||
+      isWhitespaceOnly(todoDescription) ||
+      isWhitespaceOnly(textContent)
+    ) {
+      toast.error("Oops! Looks like you missed some fields.", {
+        closeButton: true,
+        richColors: true,
+        description: "Please fill in the required fields.",
+      });
+      return;
+    }
     const formData: CreateTodo = {
       title: todoTitle.trim(),
       description: todoDescription.trim(),
@@ -188,16 +200,6 @@ export default function TodoListComponent() {
           richColors: true,
           description:
             "Your session has expired. Redirecting to login page in 3s",
-        });
-      } else if (
-        isWhitespaceOnly(todoTitle) ||
-        isWhitespaceOnly(todoDescription) ||
-        isWhitespaceOnly(textContent)
-      ) {
-        toast.error("Oops! Looks like you missed some fields.", {
-          closeButton: true,
-          richColors: true,
-          description: "Please fill in the required fields.",
         });
       } else {
         console.error(error);
