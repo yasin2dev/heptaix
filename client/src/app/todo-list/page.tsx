@@ -71,6 +71,7 @@ export default function TodoListComponent() {
                 placeholder="Todo Title"
                 className="col-span-3"
                 autoComplete="off"
+                value={todoTitle}
                 onChange={(e) => setTodoTitle(e.target.value)}
               />
               <Input
@@ -78,10 +79,12 @@ export default function TodoListComponent() {
                 placeholder="Todo Description"
                 className="col-span-3"
                 autoComplete="off"
+                value={todoDescription}
                 onChange={(e) => setTodoDescription(e.target.value)}
               />
               <Textarea
                 placeholder="Todo Content"
+                value={textContent}
                 onChange={(e) => setTextContent(e.target.value)}
               />
             </div>
