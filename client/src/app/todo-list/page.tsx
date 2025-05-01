@@ -15,7 +15,6 @@ import {
   CardHeader,
   CardTitle,
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -29,13 +28,14 @@ import { LoadingScreen } from "@client/app/components";
 import { useAuth } from "@client/app/contexts";
 
 import type { CreateTodo, Todo } from "@server/types";
-import { epochToDateString, isWhitespaceOnly } from "@common/helpers/index";
+import { epochToDateString } from "@common/helpers/index";
 
 export default function TodoListComponent() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
   const [todoTitle, setTodoTitle] = useState<string>("");
   const [todoDescription, setTodoDescription] = useState<string>("");
   const [textContent, setTextContent] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { loading, user } = useAuth();
 
   useEffect(() => {
@@ -50,54 +50,61 @@ export default function TodoListComponent() {
 
   return (
     <>
-      <div className="container m-auto ml-auto flex mt-8 space-x-2 justify-end w-full">
-        <Dialog>
+      <div className="container m-auto ml-auto mt-8 flex justify-end w-full">
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-accent-foreground hover:cursor-pointer">
+            <Button
+              className="bg-accent-foreground hover:cursor-pointer"
+              onClick={() => setIsDialogOpen(true)}
+            >
               <Plus />
               Create
             </Button>
           </DialogTrigger>
           <DialogContent
-            className="sm:max-w-[425px]"
+            className="min-w-[calc(100%-100px)] w-[calc(100%-100px)] min-h-[calc(100%-100px)] flex flex-col"
             onInteractOutside={(e) => e.preventDefault()}
           >
             <DialogHeader>
               <DialogTitle>Create Todo</DialogTitle>
             </DialogHeader>
-            <div className="gap-4 space-y-4 py-4">
-              <Input
-                id="todoTitle"
-                placeholder="Todo Title"
-                className="col-span-3"
-                autoComplete="off"
-                value={todoTitle}
-                onChange={(e) => setTodoTitle(e.target.value)}
-              />
-              <Input
-                id="todoDescription"
-                placeholder="Todo Description"
-                className="col-span-3"
-                autoComplete="off"
-                value={todoDescription}
-                onChange={(e) => setTodoDescription(e.target.value)}
-              />
+
+            <div className="flex flex-col flex-1 gap-4 py-4">
+              <div className="flex flex-col gap-2">
+                <Input
+                  id="todoTitle"
+                  placeholder="Todo Title"
+                  autoComplete="off"
+                  spellCheck="false"
+                  value={todoTitle}
+                  onChange={(e) => setTodoTitle(e.target.value)}
+                />
+                <Input
+                  id="todoDescription"
+                  placeholder="Todo Description"
+                  autoComplete="off"
+                  spellCheck="false"
+                  value={todoDescription}
+                  onChange={(e) => setTodoDescription(e.target.value)}
+                />
+              </div>
               <Textarea
                 placeholder="Todo Content"
+                className="flex-1 resize-none"
+                spellCheck="false"
                 value={textContent}
                 onChange={(e) => setTextContent(e.target.value)}
               />
             </div>
+
             <DialogFooter>
-              <DialogClose asChild>
-                <Button
-                  className="w-full hover:cursor-pointer"
-                  type="submit"
-                  onClick={handleCreateTodo}
-                >
-                  Create
-                </Button>
-              </DialogClose>
+              <Button
+                className="hover:cursor-pointer"
+                type="submit"
+                onClick={handleCreateTodo}
+              >
+                Create
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -121,14 +128,17 @@ export default function TodoListComponent() {
     </>
   );
 
+  //prettier-ignore
   async function handleTodo() {
     try {
       await axios
-        .get(`${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/list`, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        })
+        .get(`${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/list`,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          }
+        )
         .then((result) => {
           setTodos(result.data);
         });
@@ -151,19 +161,8 @@ export default function TodoListComponent() {
     }
   }
 
+  // prettier-ignore
   async function handleCreateTodo() {
-    if (
-      isWhitespaceOnly(todoTitle) ||
-      isWhitespaceOnly(todoDescription) ||
-      isWhitespaceOnly(textContent)
-    ) {
-      toast.error("Oops! Looks like you missed some fields.", {
-        closeButton: true,
-        richColors: true,
-        description: "Please fill in the required fields.",
-      });
-      return;
-    }
     const formData: CreateTodo = {
       title: todoTitle.trim(),
       description: todoDescription.trim(),
@@ -171,9 +170,7 @@ export default function TodoListComponent() {
       createdAt: new Date(Date.now()).getTime(),
     };
     try {
-      await axios
-        .post(
-          `${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/create`,
+      await axios.post(`${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/create`, 
           formData,
           {
             headers: {
@@ -182,12 +179,17 @@ export default function TodoListComponent() {
           }
         )
         .then((result) => {
-          setTodos((prev) => [...prev, result.data]);
-          setTextContent("");
-          setTodoTitle("");
-          setTodoDescription("");
-        })
-        .finally(() => handleTodo());
+          // Only clear fields if return status 201 (Created)
+          if (result.status === 201) {
+            setTodos((prev) => [...prev, result.data]);
+            setTextContent("");
+            setTodoTitle("");
+            setTodoDescription("");
+          }
+        }).finally(() => {
+          handleTodo();
+          setIsDialogOpen(false);
+        });
     } catch (error) {
       const axiosError = error as AxiosError<{ data: string }>;
       if (axiosError.response?.data.toString().startsWith("Session")) {
@@ -200,6 +202,13 @@ export default function TodoListComponent() {
           richColors: true,
           description:
             "Your session has expired. Redirecting to login page in 3s",
+        });
+      } else if (axiosError.response?.data.toString() === "Empty Field") {
+        setIsDialogOpen(true);
+        toast.error("Oops! Looks like you missed some fields.", {
+          closeButton: true,
+          richColors: true,
+          description: "Please fill in the required fields.",
         });
       } else {
         console.error(error);

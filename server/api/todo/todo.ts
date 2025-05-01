@@ -25,7 +25,7 @@ todoRouter.post("/create", (req: Request, res: Response) => {
   const jwtResult = verifyToken(authHeader);
 
   const { title, description, textContent, createdAt } = req.body;
-  if (!title || !textContent || title === "" || textContent === "") { res.sendStatus(400); return; }
+  if (!title || !textContent || title === "" || textContent === "") { res.status(400).send("Empty Field"); return; }
 
   if (!jwtResult) {
     res.status(500).send("Internal Server Error");
