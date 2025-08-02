@@ -1,4 +1,4 @@
-import { TokenUser } from "../../../server/types";
+import { TokenUser } from "@server/types";
 
 export type AuthContextType = {
   isAuthenticated: boolean;
