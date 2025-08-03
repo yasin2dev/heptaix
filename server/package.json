@@ -1,5 +1,5 @@
 {
-  "name": "todo-app-server",
+  "name": "@heptaix/server",
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
