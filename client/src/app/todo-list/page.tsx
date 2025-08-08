@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import React, { useEffect, useState } from 'react';
+import axios, { AxiosError } from 'axios';
 
-import { Plus } from "lucide-react";
+import { Plus } from 'lucide-react';
 
-import { toast } from "sonner";
+import { toast } from 'sonner';
 import {
   Button,
   Card,
@@ -22,19 +22,19 @@ import {
   DialogTrigger,
   Input,
   Textarea,
-} from "@client/ui";
+} from '@client/ui';
 
-import { LoadingScreen } from "@client/app/components";
-import { useAuth } from "@client/app/contexts";
+import { LoadingScreen } from '@client/app/components';
+import { useAuth } from '@client/app/contexts';
 
-import type { CreateTodo, Todo } from "@server/types";
-import { epochToDateString } from "@common/helpers/index";
+import type { CreateTodo, Todo } from '@server/types';
+import { epochToDateString } from '@common/helpers/index';
 
 export default function TodoListComponent() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
-  const [todoTitle, setTodoTitle] = useState<string>("");
-  const [todoDescription, setTodoDescription] = useState<string>("");
-  const [textContent, setTextContent] = useState<string>("");
+  const [todoTitle, setTodoTitle] = useState<string>('');
+  const [todoDescription, setTodoDescription] = useState<string>('');
+  const [textContent, setTextContent] = useState<string>('');
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { loading, user } = useAuth();
 
@@ -63,7 +63,7 @@ export default function TodoListComponent() {
           </DialogTrigger>
           <DialogContent
             className="min-w-[calc(100%-100px)] w-[calc(100%-100px)] min-h-[calc(100%-100px)] flex flex-col"
-            onInteractOutside={(e) => e.preventDefault()}
+            onInteractOutside={e => e.preventDefault()}
           >
             <DialogHeader>
               <DialogTitle>Create Todo</DialogTitle>
@@ -77,7 +77,7 @@ export default function TodoListComponent() {
                   autoComplete="off"
                   spellCheck="false"
                   value={todoTitle}
-                  onChange={(e) => setTodoTitle(e.target.value)}
+                  onChange={e => setTodoTitle(e.target.value)}
                 />
                 <Input
                   id="todoDescription"
@@ -85,7 +85,7 @@ export default function TodoListComponent() {
                   autoComplete="off"
                   spellCheck="false"
                   value={todoDescription}
-                  onChange={(e) => setTodoDescription(e.target.value)}
+                  onChange={e => setTodoDescription(e.target.value)}
                 />
               </div>
               <Textarea
@@ -93,7 +93,7 @@ export default function TodoListComponent() {
                 className="flex-1 resize-none"
                 spellCheck="false"
                 value={textContent}
-                onChange={(e) => setTextContent(e.target.value)}
+                onChange={e => setTextContent(e.target.value)}
               />
             </div>
 
@@ -131,7 +131,7 @@ export default function TodoListComponent() {
   //prettier-ignore
   async function handleTodo() {
     try {
-      await axios
+      const request = await axios
         .get(`${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/list`,
           {
             headers: {
@@ -139,9 +139,7 @@ export default function TodoListComponent() {
             },
           }
         )
-        .then((result) => {
-          setTodos(result.data);
-        });
+        setTodos(request.data);
     } catch (error) {
       const axiosError = error as AxiosError<{ data: string }>;
       if (axiosError.response?.data.toString().startsWith("Session")) {
@@ -170,7 +168,7 @@ export default function TodoListComponent() {
       createdAt: new Date(Date.now()).getTime(),
     };
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/create`, 
+      const request = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/create`, 
           formData,
           {
             headers: {
@@ -178,18 +176,15 @@ export default function TodoListComponent() {
             },
           }
         )
-        .then((result) => {
           // Only clear fields if return status 201 (Created)
-          if (result.status === 201) {
-            setTodos((prev) => [...prev, result.data]);
+          if (request.status === 201) {
+            setTodos((prev) => [...prev, request.data]);
             setTextContent("");
             setTodoTitle("");
             setTodoDescription("");
           }
-        }).finally(() => {
           handleTodo();
           setIsDialogOpen(false);
-        });
     } catch (error) {
       const axiosError = error as AxiosError<{ data: string }>;
       if (axiosError.response?.data.toString().startsWith("Session")) {
