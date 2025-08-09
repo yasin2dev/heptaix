@@ -5,7 +5,7 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
 
-import { FiHome, FiGithub, FiBookOpen, FiList } from 'react-icons/fi';
+import { FiHome, FiGithub, FiBookOpen, FiList, FiTag } from 'react-icons/fi';
 
 import type { SidebarLinks, SidebarProps } from '@client/app/types';
 import { 
@@ -33,6 +33,12 @@ const mainItems: SidebarLinks[] = [
     title: "To-Do List",
     url: "/todo-list",
     icon: FiList,
+    target: '_self'
+  },
+  {
+    title: "Preferences",
+    url: "/preferences",
+    icon: FiTag,
     target: '_self'
   },
 ]
