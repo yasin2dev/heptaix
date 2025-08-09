@@ -182,9 +182,9 @@ export default function TodoListComponent() {
             setTextContent("");
             setTodoTitle("");
             setTodoDescription("");
+            handleTodo();
+            setIsDialogOpen(false);
           }
-          handleTodo();
-          setIsDialogOpen(false);
     } catch (error) {
       const axiosError = error as AxiosError<{ data: string }>;
       if (axiosError.response?.data.toString().startsWith("Session")) {
