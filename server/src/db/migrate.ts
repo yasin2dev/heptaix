@@ -1,7 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import { DB } from '@server/db'
+import { DB, PG_DB } from '../../db/db';
+import to from 'await-to-js';
 
 async function createMigrationsTable() {
   await DB`
@@ -11,6 +12,18 @@ async function createMigrationsTable() {
       run_at TIMESTAMPTZ DEFAULT now()
     )
   `
+}
+
+
+async function isDatabaseExists(dbName: string): Promise<boolean> {
+  const SQL = PG_DB`SELECT 1 FROM pg_database WHERE "datname" = ${dbName};`;
+  const [err, res] = await to(SQL);
+  if (err) throw err;
+  if (res.length === 0) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 function formatMigrationTitle(file: string): string {
@@ -54,13 +67,27 @@ async function runMigrations() {
     try {
       await applyMigration(file, sql)
     } catch (err) {
-      console.error(`❌ Error in migration ${file}:`, err)
+      console.error(`Error in migration ${file}:`, err)
       process.exit(1)
     }
   }
 
-  console.log('✅ All migrations applied')
+  console.log('All migrations applied')
   process.exit(0)
 }
 
-runMigrations()
+async function runner(dbName: string) {
+  const databaseExists = await isDatabaseExists(dbName);
+
+  if (databaseExists) { await runMigrations(); return; }
+  else {
+    const createDbSQL = `CREATE DATABASE ${dbName};`;
+    await PG_DB.unsafe(createDbSQL);
+
+    console.log("Database created. Running Migrations...");
+    await runMigrations();
+    return;
+  }
+}
+
+runner('heptaix');
