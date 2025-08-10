@@ -29,6 +29,8 @@ import { useAuth } from '@client/app/contexts';
 
 import type { CreateTodo, Todo } from '@server/types';
 import { epochToDateString } from '@common/helpers/index';
+import { FiTrash } from 'react-icons/fi';
+import { MdDataObject } from 'react-icons/md';
 
 export default function TodoListComponent() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
@@ -120,11 +122,19 @@ export default function TodoListComponent() {
               {a.textContent}
             </CardContent>
             <CardFooter className="flex justify-end w-full mt-4">
+                <Button
+                  className="bg-red-600 cursor-pointer hover:bg-red-800 mr-2 text-sm"
+                  onClick={() => handleDeleteTodo(a.todoId)}
+                >
+                  <FiTrash />
+                  Delete
+                </Button>
               <p className="text-xs">{epochToDateString(a.createdAt)}</p>
             </CardFooter>
           </Card>
         ))}
       </div>
+      )}
     </>
   );
 
@@ -208,6 +218,24 @@ export default function TodoListComponent() {
       } else {
         console.error(error);
       }
+    }
+  }
+
+  async function handleDeleteTodo(todoId: string) {
+    let decide = confirm("Do you really want to delete this todo?");
+    if (!decide) return;
+    const request = await axios.post(
+      `${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/delete`,
+      { todoId },
+      {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      }
+    );
+
+    if (request.status === 200) {
+      handleTodo(); // refresh list
     }
   }
 }

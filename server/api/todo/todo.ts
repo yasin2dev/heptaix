@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { randomUUID } from "crypto";
 
-import { createTodo, listTodos } from "@server/db";
+import { createTodo, deleteTodo, listTodos } from "@server/db";
 import { verifyToken } from "../../auth/index";
 import { decrypt, encrypt } from "@common/helpers";
 import { Todo } from "@server/types";
@@ -52,6 +52,26 @@ todoRouter.post("/create", async (req: Request, res: Response) => {
   } else {
     res.status(406).send(jwtResult.error)
   }
+})
+
+todoRouter.post("/delete", async (req: Request, res: Response) => {
+  const todoId = req.body['todoId'];
+  
+  const authHeader = req.headers['authorization'];
+  const jwtResult = verifyToken(authHeader);
+
+  if (!jwtResult) {
+    res.status(500).send('Internal Server Error');
+  
+  } else if (jwtResult.success) {
+  
+    const deletedResult = await deleteTodo(todoId);
+    res.status(200).json(deletedResult);
+  
+  } else {
+    res.status(406).send(jwtResult.error);
+  }
+
 })
 
 export default todoRouter;
