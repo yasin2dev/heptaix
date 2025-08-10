@@ -14,3 +14,4 @@ const options: DBOptions = {
 }
 
 export const DB = postgres({ ...options })
+export const PG_DB = postgres({ ...options, database: 'postgres' });
