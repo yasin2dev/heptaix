@@ -6,6 +6,7 @@
     "server"
   ],
   "scripts": {
+    "migrate": "npm run migrate --prefix server",
     "dev": "concurrently \"npm run start --prefix server\" \"npm run dev --prefix client\""
   },
   "devDependencies": {
