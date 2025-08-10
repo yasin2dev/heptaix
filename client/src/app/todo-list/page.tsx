@@ -54,15 +54,20 @@ export default function TodoListComponent() {
     <>
       <div className="container m-auto ml-auto mt-8 flex justify-end w-full">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button
-              className="bg-accent-foreground hover:cursor-pointer"
-              onClick={() => setIsDialogOpen(true)}
-            >
-              <Plus />
-              Create
-            </Button>
-          </DialogTrigger>
+          {todos.length <= 0 ? (
+            <div></div>
+          ) : (
+            <DialogTrigger asChild>
+              <Button
+                className="bg-accent-foreground hover:cursor-pointer"
+                onClick={() => setIsDialogOpen(true)}
+              >
+                <Plus />
+                Create
+              </Button>
+            </DialogTrigger>
+          )}
+
           <DialogContent
             className="min-w-[calc(100%-100px)] w-[calc(100%-100px)] min-h-[calc(100%-100px)] flex flex-col"
             onInteractOutside={e => e.preventDefault()}
@@ -111,17 +116,32 @@ export default function TodoListComponent() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="container flex-col-reverse max-h-screen m-auto gap-10">
-        {todos.map((a: Todo) => (
-          <Card key={a.todoId} className="w-auto mt-8 gap-2 ">
-            <CardHeader className="space-y-0">
-              <CardTitle>{a.title}</CardTitle>
-              <CardDescription>{a.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="max-h-[6rem] whitespace-pre-wrap line-clamp-3">
-              {a.textContent}
-            </CardContent>
-            <CardFooter className="flex justify-end w-full mt-4">
+      {todos.length <= 0 ? (
+        <div className="flex flex-col items-center justify-center mt-10">
+          <MdDataObject className="text-5xl" />
+          <h2 className="italic text-center text-lg mt-2 opacity-50 tracking-wide font-sans drop-shadow-sm">
+            Nothing to see here.
+          </h2>
+          <Button
+            className="mt-5 bg-accent-foreground hover:cursor-pointer"
+            onClick={() => setIsDialogOpen(true)}
+          >
+            <Plus />
+            Create
+          </Button>
+        </div>
+      ) : (
+        <div className="container flex-col-reverse max-h-screen m-auto gap-10">
+          {todos.map((a: Todo) => (
+            <Card key={a.todoId} className="w-auto mt-8 gap-2 ">
+              <CardHeader className="space-y-0">
+                <CardTitle>{a.title}</CardTitle>
+                <CardDescription>{a.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="max-h-[6rem] whitespace-pre-wrap line-clamp-3">
+                {a.textContent}
+              </CardContent>
+              <CardFooter className="flex justify-end w-full mt-4">
                 <Button
                   className="bg-red-600 cursor-pointer hover:bg-red-800 mr-2 text-sm"
                   onClick={() => handleDeleteTodo(a.todoId)}
@@ -129,11 +149,11 @@ export default function TodoListComponent() {
                   <FiTrash />
                   Delete
                 </Button>
-              <p className="text-xs">{epochToDateString(a.createdAt)}</p>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+                <p className="text-xs">{epochToDateString(a.createdAt)}</p>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       )}
     </>
   );
