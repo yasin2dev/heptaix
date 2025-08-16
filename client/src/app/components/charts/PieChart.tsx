@@ -45,21 +45,9 @@ const PASTEL_COLORS_BORDERS = [
 ];
 
 export default function DualChartCard() {
-  const [user, setUser] = useState<User>();
-
-  useEffect(() => {
-    const localUser = localStorage.getItem("USER");
-    if (localUser) {
-      setUser(JSON.parse(localUser));
-    }
-  }, [setUser]);
-
   return (
-    <Card className="w-full flex justify-between max-w-full shadow-md m-4 p-4">
+    <Card className="w-full flex justify-between shadow-md p-4">
       <CardContent className="mb-10">
-        <h2 className="text-lg text-center font-semibold mb-6">
-          Welcome, {user?.name}
-        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Pie Chart */}
           <div className="h-64">
