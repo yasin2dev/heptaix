@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@heptaix/common": "workspace:^",
     "@preact/signals-core": "^1.8.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
