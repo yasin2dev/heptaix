@@ -1,11 +1,8 @@
 import crypto from 'node:crypto';
 
 const defaultAlgorithm: crypto.CipherGCMTypes = 'aes-256-gcm';
-const defaultSecretKey: string =
-  process.env.TODO_ENC_KEY ?? 'HFm9UGdRuc2kkU2lRApHPoJZj5tht57z';
 
 // Key must be 32 bytes for aes-256-gcm
-const key = crypto.createHash('sha256').update(defaultSecretKey).digest(); // Buffer, 32 bytes
 
 
 /**
@@ -22,7 +19,9 @@ const key = crypto.createHash('sha256').update(defaultSecretKey).digest(); // Bu
  *
  * @returns Promise<string> The encrypted string, suitable for decrypt().
  */
-export async function encrypt(data: string): Promise<string> {
+export async function encrypt(data: string, secretKey: string): Promise<string> {
+  const key = crypto.createHash('sha256').update(secretKey).digest(); // Buffer, 32 bytes
+
   const iv = crypto.randomBytes(12);
   const cipher = crypto.createCipheriv(defaultAlgorithm, key, iv);
   
@@ -47,13 +46,16 @@ export async function encrypt(data: string): Promise<string> {
  * @example
  *
  * const encrypted = await encrypt("String data to encrypt");
- * const decrypted = await decrypt(encrypted);
+ * const decrypted = await decrypt(encrypted, secretKey);
  *
  * @returns Promise<string> The decrypted original string.
  */
-export async function decrypt(data: string): Promise<string> {
+export async function decrypt(data: string, secretKey: string): Promise<string> {
   // iv: 12 bytes (24 hex), authTag: 16 bytes (32 hex)
   // iv hex 0 - 24 (12 byte - 24 hex) / authTagHex 24 - 56 (16 byte - 32 hex) / encrypted data 56 byte and after.
+  
+  const key = crypto.createHash('sha256').update(secretKey).digest(); // Buffer, 32 bytes
+  
   const ivHex = data.slice(0, 24);
   const authTagHex = data.slice(24, 56);
   const encrypted = data.slice(56);
