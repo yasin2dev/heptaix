@@ -1,5 +1,5 @@
 import { IconType } from "react-icons/lib";
-import { TokenUser } from "../../../server/types";
+import { TokenUser } from "@server/types";
 
 export type SidebarLinks = {
   title: string,
