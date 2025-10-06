@@ -26,6 +26,7 @@ import {
 
 import { LoadingScreen } from '@client/app/components';
 import { useAuth } from '@client/app/contexts';
+import { ToastMessages } from '@client/lib';
 
 import type { CreateTodo, Todo } from '@server/types';
 import { epochToDateString } from '@common/helpers/index';
@@ -39,6 +40,8 @@ export default function TodoListComponent() {
   const [textContent, setTextContent] = useState<string>('');
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { loading, user } = useAuth();
+
+  const ToastManager = new ToastMessages();
 
   useEffect(() => {
     if (user?.token) {
@@ -173,16 +176,12 @@ export default function TodoListComponent() {
     } catch (error) {
       const axiosError = error as AxiosError<{ data: string }>;
       if (axiosError.response?.data.toString().startsWith("Session")) {
-        setInterval(() => {
+        ToastManager.error({ message: "Session Expired", description: "Your session has expired. Redirecting to login page in 3s" });
+        setTimeout(() => {
           localStorage.removeItem("JWT_TOKEN");
-          window.location.href = "/login";
+          window.open("/login", "_self");
         }, 3000);
-        toast.error(axiosError.response?.data.toString(), {
-          closeButton: true,
-          richColors: true,
-          description:
-            "Your session has expired. Redirecting to login page in 3s",
-        });
+
       } else {
         console.error(error);
       }
@@ -214,21 +213,13 @@ export default function TodoListComponent() {
             setTodoDescription("");
             handleTodo();
             setIsDialogOpen(false);
+
+            ToastManager.success({ message: "Todo Created", description: "Your todo has been created successfully." });
           }
     } catch (error) {
       const axiosError = error as AxiosError<{ data: string }>;
-      if (axiosError.response?.data.toString().startsWith("Session")) {
-        setInterval(() => {
-          localStorage.removeItem("JWT_TOKEN");
-          window.location.href = "/login";
-        }, 3000);
-        toast.error(axiosError.response?.data.toString(), {
-          closeButton: true,
-          richColors: true,
-          description:
-            "Your session has expired. Redirecting to login page in 3s",
-        });
-      } else if (axiosError.response?.data.toString() === "Empty Field") {
+
+      if (axiosError.response?.data.toString() === "Empty Field") {
         setIsDialogOpen(true);
         toast.error("Oops! Looks like you missed some fields.", {
           closeButton: true,
@@ -242,7 +233,7 @@ export default function TodoListComponent() {
   }
 
   async function handleDeleteTodo(todoId: string) {
-    let decide = confirm("Do you really want to delete this todo?");
+    let decide = confirm('Do you really want to delete this todo?');
     if (!decide) return;
     const request = await axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/todo/delete`,
