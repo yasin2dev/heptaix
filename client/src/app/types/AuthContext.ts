@@ -6,4 +6,5 @@ export type AuthContextType = {
   login: (token: string, user: string) => void;
   logout: () => void;
   user: TokenUser | undefined;
+  checkAuth: () => void;
 };
