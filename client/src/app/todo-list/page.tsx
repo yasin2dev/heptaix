@@ -33,6 +33,8 @@ import { epochToDateString } from '@common/helpers/index';
 import { FiTrash } from 'react-icons/fi';
 import { MdDataObject } from 'react-icons/md';
 
+import { useHotkeys } from 'react-hotkeys-hook';
+
 export default function TodoListComponent() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
   const [todoTitle, setTodoTitle] = useState<string>('');
@@ -48,6 +50,14 @@ export default function TodoListComponent() {
       handleTodo();
     }
   }, [user?.token]);
+
+  useHotkeys('ctrl+alt+n', () => setIsDialogOpen(true), []);
+  useHotkeys(
+    'ctrl+alt+enter',
+    async () => (isDialogOpen ? await handleCreateTodo() : null),
+    [isDialogOpen, todoTitle, todoDescription, textContent],
+    { preventDefault: true, enableOnFormTags: true }
+  );
 
   if (loading) {
     return <LoadingScreen />;
