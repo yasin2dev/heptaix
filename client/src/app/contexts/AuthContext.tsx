@@ -36,12 +36,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     window.location.href = '/';
   };
 
-  const checkAuth = () => {
-    setInterval(() => {
-      const token = localStorage.getItem('JWT_TOKEN');
-      const user = localStorage.getItem('USER');
-      if (token && user) {
-        return true;
+  const checkAuthResponse = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/api/user/verify`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(localStorage.getItem('JWT_TOKEN') ? { 'Authorization': `Bearer ${localStorage.getItem('JWT_TOKEN')}` } : {}),
+        },
+      }
+    );
+    return response;
+  };
+
+  const checkAuth = async () => {
+    const authResponse = await checkAuthResponse();
+    if (authResponse.status !== 200) window.open('/login', '_self');
+    setInterval(async () => {
+      const authResponse = await checkAuthResponse();
+      if (authResponse.status === 200) {
+        return;
       } else {
         // @TODO redirect to unauthorized page
         return window.open('/login', '_self');

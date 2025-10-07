@@ -43,6 +43,25 @@ userRoute.post('/login', async (req: Request, res: Response) => {
         .catch((e) => console.error(e))
 })
 
+
+userRoute.post('/verify', (req: Request, res: Response) => {
+  if (!req.headers.authorization) return res.status(401).send("Unauthorized");
+  const token = req.headers.authorization.split(' ')[1];
+
+  const jwtSecret = process.env.JWT_SECRET_KEY;
+  if (!jwtSecret) throw new Error("JWT Secret Key is not defined in .env file");
+
+  jwt.verify(token, jwtSecret, (err) => {
+    if (err) {
+      return res.status(401).send("Unauthorized");
+    } else {
+      console.log("Token is valid");
+      return res.status(200).end();
+    }
+  });
+
+});
+
 userRoute.get('/', (req: Request, res: Response) => {
     listUsers().then((data) => {
         if (data) res.status(200).json(data)
