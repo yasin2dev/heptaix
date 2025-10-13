@@ -36,8 +36,8 @@ const mainItems: SidebarLinks[] = [
     target: '_self'
   },
   {
-    title: "Preferences",
-    url: "/preferences",
+    title: "Tags",
+    url: "/tags",
     icon: FiTag,
     target: '_self'
   },
