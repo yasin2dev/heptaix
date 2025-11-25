@@ -1,8 +1,8 @@
+import to from 'await-to-js';
 import fs from 'fs'
 import path from 'path'
 
 import { DB, PG_DB } from '../../db/db';
-import to from 'await-to-js';
 
 async function createMigrationsTable() {
   await DB`
@@ -90,4 +90,4 @@ async function runner(dbName: string) {
   }
 }
 
-runner('heptaix');
+runner(process.env.DB_NAME || 'heptaix');
