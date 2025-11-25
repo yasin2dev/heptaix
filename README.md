@@ -11,6 +11,9 @@
 Built with PostgreSQL 16, Next.js 15 & React.js 19 and TypeScript.
 
 
+## Under construction:
+- Vault system for keeping sensitive configuration and secrets secure
+
 ## Installation
 
 - <p>Install project source code via: <code>git clone https://github.com/yasin2dev/heptaix.git</code></p>
