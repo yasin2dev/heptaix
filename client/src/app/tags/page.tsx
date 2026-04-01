@@ -17,7 +17,7 @@ export default function TagsPage() {
         {cards.map((card) => (
           <div key={card.key}>
             <button
-              className="bg-white shadow rounded-lg p-8 flex flex-col items-center justify-center hover:bg-gray-100 transition cursor-pointer border border-gray-200 w-full"
+              className="bg-card shadow rounded-lg p-8 flex flex-col items-center justify-center hover:bg-accent transition cursor-pointer border border-border w-full"
               onClick={card.action}
             >
               {card.icon && <card.icon />}

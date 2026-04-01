@@ -38,8 +38,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-200">
-      <Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-200 dark:from-background dark:to-background">
+      <Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-card">
         <CardContent>
           {response ? (
             <p className="text-center text-red-100 font-semibold gap-2 italic bg-red-600 rounded-sm mt-2 mb-2 p-2">
@@ -48,7 +48,7 @@ export default function LoginPage() {
           ) : (
             <></>
           )}
-          <h2 className="text-2xl font-semibold text-center mb-6 text-amber-600">
+          <h2 className="text-2xl font-semibold text-center mb-6 text-primary">
             Welcome again!
           </h2>
           <form onSubmit={e => e.preventDefault()} className="space-y-4">
@@ -56,7 +56,6 @@ export default function LoginPage() {
               type="email"
               placeholder="Email"
               value={email}
-              className="dark:text-black"
               onChange={e => setEmail(e.target.value)}
               required
             />
@@ -64,19 +63,18 @@ export default function LoginPage() {
               type="password"
               placeholder="Password"
               value={password}
-              className="dark:text-black"
               onChange={e => setPassword(e.target.value)}
               required
             />
             <div className="text-right text-sm">
-              <Link href="/" className="text-amber-500 hover:underline">
+              <Link href="/" className="text-primary hover:underline">
                 Forgetten Password *_* ?
               </Link>
             </div>
             <Button
               onClick={handleLoginUser}
               type="submit"
-              className="w-full text-white bg-amber-600 hover:bg-amber-700"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
             >
               Login
             </Button>

@@ -25,7 +25,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
       <DropdownMenuTrigger asChild className='mb-4'>
         <SidebarMenuButton>
           <Avatar className="cursor-pointer">
-            <AvatarFallback className='bg-amber-600 text-white'>{`${user?.name[0].toUpperCase()}${user?.surname[0].toUpperCase()}`}</AvatarFallback>
+            <AvatarFallback className='bg-primary text-primary-foreground'>{`${user?.name[0].toUpperCase()}${user?.surname[0].toUpperCase()}`}</AvatarFallback>
           </Avatar>
           <span>{user?.name} {user?.surname}</span>
         </SidebarMenuButton>

@@ -3,6 +3,7 @@ export * from './LoadingScreen';
 export * from './MyScreen';
 export * from './ProfileDropdown';
 export * from './Sidebar';
+export * from './ThemeToggle';
 export * from './UnauthorizedScreen';
 export * from './UnauthorizedSidebar';
 

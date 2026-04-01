@@ -42,8 +42,8 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-300">
-      <Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-white">
+    <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-300 dark:from-background dark:to-background">
+      <Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-card">
         <CardContent>
           {response === 'Register Successful.' ? (
             <p className="text-center text-green-100 font-semibold gap-2 italic bg-green-600 rounded-sm mt-2 mb-2 p-2">
@@ -56,7 +56,7 @@ export default function RegisterPage() {
           ) : (
             <></>
           )}
-          <h2 className="text-2xl font-semibold text-center mb-6 text-amber-600">
+          <h2 className="text-2xl font-semibold text-center mb-6 text-primary">
             Welcome! Let's get you register
           </h2>
           <form
@@ -91,14 +91,14 @@ export default function RegisterPage() {
               onChange={e => setPassword(e.target.value)}
             />
             <div className="text-right text-sm">
-              <Link href="/login" className="text-amber-500 hover:underline">
+              <Link href="/login" className="text-primary hover:underline">
                 Already have an account?
               </Link>
             </div>
             <Button
               onClick={handleCreateUser}
               type="submit"
-              className="w-full text-white bg-amber-600 hover:bg-amber-700"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
             >
               Register
             </Button>

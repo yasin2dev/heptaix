@@ -20,6 +20,7 @@ import {
 } from "@client/ui";
 
 import { SidebarLinks } from "@client/app/types";
+import { ThemeToggle } from "@client/app/components/ThemeToggle";
 
 const items: SidebarLinks[] = [
   {
@@ -52,7 +53,7 @@ export function UnauthorizedNav() {
         <SidebarGroup>
           <SidebarGroupLabel className="justify-center mb-8">
             <Link href="/">
-              <span className="self-center text-2xl whitespace-nowrap dark:text-white text-amber-600 font-bold italic">
+              <span className="self-center text-2xl whitespace-nowrap text-primary font-bold italic">
                 Heptaix
               </span>
             </Link>
@@ -77,16 +78,23 @@ export function UnauthorizedNav() {
             <SidebarMenu className="items-center">
               <div className="flex items-center space-x-6 rtl:space-x-reverse">
                 <Link href="/login">
-                  <Button className="bg-amber-50 border-2 text-amber-600 border-amber-600 hover:bg-amber-600 hover:text-white cursor-pointer">
+                  <Button variant="outline" className="cursor-pointer">
                     Login
                   </Button>
                 </Link>
                 <Link href="/register">
-                  <Button className="bg-amber-600 border-2 border-amber-600 hover:bg-amber-50 hover:text-amber-600 cursor-pointer">
+                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer">
                     Register
                   </Button>
                 </Link>
               </div>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu className="items-center">
+              <ThemeToggle />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

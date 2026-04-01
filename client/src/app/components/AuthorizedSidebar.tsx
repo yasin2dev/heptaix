@@ -21,6 +21,7 @@ import {
   SidebarMenuItem 
 } from '@client/ui';
 import { ProfileDropdown } from '@client/app/components';
+import { ThemeToggle } from '@client/app/components/ThemeToggle';
 
 const mainItems: SidebarLinks[] = [
   {
@@ -69,7 +70,7 @@ export function AuthorizedNav({ user }: SidebarProps) {
         <SidebarGroup>
           <SidebarGroupLabel className='justify-center mb-8'>
             <Link href="/">
-              <span className="self-center text-2xl whitespace-nowrap dark:text-white text-amber-600 font-bold italic">Heptaix</span>
+              <span className="self-center text-2xl whitespace-nowrap text-primary font-bold italic">Heptaix</span>
             </Link>
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -89,7 +90,7 @@ export function AuthorizedNav({ user }: SidebarProps) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenu className="flex flex-row justify-between">
+        <SidebarMenu className="flex flex-row justify-between items-center">
           {footerItems.map((item) => (
             <SidebarMenuItem key={item.url}>
               <SidebarMenuButton asChild isActive={pathname === item.url}>
@@ -100,6 +101,9 @@ export function AuthorizedNav({ user }: SidebarProps) {
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
+          <SidebarMenuItem>
+            <ThemeToggle />
+          </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
           <SidebarMenuItem>
